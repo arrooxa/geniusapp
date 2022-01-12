@@ -11,6 +11,11 @@ const Game = ({navigation}) => {
 
     const [userLost, setUserLost] = useState(false);
 
+    const [blueColor, setLightBlue] = useState(false);
+    const [redColor, setLightRed] = useState(false);
+    const [yellowColor, setLightYellow] = useState(false);
+    const [greenColor, setLightGreen] = useState(false);
+
     const hasUserLost = () => setUserLost(userLost => !userLost);
 
 
@@ -23,12 +28,16 @@ const Game = ({navigation}) => {
 
         if(nextColor === 1) {
             correctGameSequence.push('blue');
+            setLightBlue(blueColor => !blueColor); // Estudar React Hooks
         }else if(nextColor === 2){
             correctGameSequence.push('red');
+            setLightRed(redColor => !redColor); // Estudar React Hooks
         }else if(nextColor === 3){
             correctGameSequence.push('yellow');
+            setLightYellow(yellowColor => !yellowColor); // Estudar React Hooks
         }else{
             correctGameSequence.push('green');
+            setLightGreen(greenColor => !greenColor); // Estudar React Hooks
         }
     };
 
@@ -68,22 +77,22 @@ const Game = ({navigation}) => {
                 <LabelGrid>
 
                 <GameLabel 
-                    color={"#000066"}
+                    color={blueColor ? "#0000FF" : "#000066"}
                     onPressIn={() => handleGamePress('blue')}
                 />
                 
                 <GameLabel 
-                    color="#660000"
+                    color={redColor ? "#FF0000" : "#660000"}
                     onPressIn={() => handleGamePress('red')}
                 />
                 
                 <GameLabel 
-                    color="#666600"
+                    color={yellowColor ? "#ffff00" : "#666600"}
                     onPressIn={() => handleGamePress('yellow')}
                 />
                 
                 <GameLabel 
-                    color="#006600"
+                    color={greenColor ? "#00ff00" : "#006600"}
                     onPressIn={() => handleGamePress('green')}
                 />
 
