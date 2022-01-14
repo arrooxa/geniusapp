@@ -22,17 +22,19 @@ const Game = ({navigation}) => {
     const [userLost, setUserLost] = useState(false);
 
     const handleLightColor = (newColor, {blueColor = false, redColor = false, yellowColor = false, greenColor = false}) => {
-
+        const gameSequence = [...arrayGameSequence, newColor];
         setArrayGameSequence(oldArray => [...oldArray, newColor]);
 
-        setColorBool(color => ({
-            ...color, blueColor, yellowColor, redColor, greenColor,
-        }))
-        setTimeout(() => {
+        gameSequence.map((color) => {
             setColorBool(color => ({
-                ...color, blueColor: false, yellowColor: false, redColor: false, greenColor: false,
+                ...color, blueColor, yellowColor, redColor, greenColor,
             }))
-        }, 2000)
+            setTimeout(() => {
+                setColorBool(color => ({
+                    ...color, blueColor: false, yellowColor: false, redColor: false, greenColor: false,
+                }))
+            }, 2000)
+        })
     }
 
     const hasUserLost = () => setUserLost(userLost => !userLost);
@@ -64,8 +66,6 @@ const Game = ({navigation}) => {
     function handleGamePress(color) {
         const newSequence = [...arrayPlayerSequence, color];
         setArrayPlayerSequence(newSequence);
-        console.log(newSequence);
-        console.log(arrayGameSequence);
 
         if(JSON.stringify(newSequence) === JSON.stringify(arrayGameSequence)) {
             nextGameColor();
