@@ -10,67 +10,57 @@ const Game = ({navigation}) => {
 
     const hasUserLost = () => setUserLost(userLost => !userLost);
 
-    const [redColor, setRedColor] = useState(false);
-    const [blueColor, setBlueColor] = useState(false);
-    const [yellowColor, setYellowColor] = useState(false);
-    const [greenColor, setGreenColor] = useState(false);
+    // const [redColor, setRedColor] = useState(false);
+    // const [blueColor, setBlueColor] = useState(false);
+    // const [yellowColor, setYellowColor] = useState(false);
+    // const [greenColor, setGreenColor] = useState(false);
+
+    const [color, setColor] = useState({
+        'blue': {index: 1, active: false},
+        'red': {index: 2, active: false},
+        'yellow': {index: 3, active: false},
+        'green': {index: 4, active: false},
+    })
 
     const [arrayPlayerSequence, setArrayPlayerSequence] = useState([]);
 
-    const [arrayGameSequence, setArrayGameSequence] = useState([]);
-
-    useEffect(() => {
-        arrayGameSequence.forEach((item) => {
-            switch(item){
-                case 'blue':
-                    setBlueColor(color => !color);
-                    setTimeout(() => {
-                        setBlueColor(color => !color);
-                    }, 2000)
-                    break;
-                case 'red':
-                    setRedColor(color => !color);
-                    setTimeout(() => {
-                        setRedColor(color => !color);
-                    }, 2000)
-                    break;
-                case 'yellow':
-                    setYellowColor(color => !color);
-                    setTimeout(() => {
-                        setYellowColor(color => !color);
-                    }, 2000)
-                    break;
-                default: 
-                    setGreenColor(color => !color);
-                    setTimeout(() => {
-                        setGreenColor(color => !color);
-                    }, 2000)
-                    break;
-            }
-        })
-    }, [arrayGameSequence])
-
+    const arrayGameSequence = [];
+    
     const nextGameColor = function () {
         const nextColor = Math.floor(Math.random() * (5 - 1)) + 1;
         console.log(nextColor);
 
-        switch(nextColor) {
-            case 1: 
-                setArrayGameSequence(oldArray => [...oldArray, 'blue']);
-                break;
-            case 2:
-                setArrayGameSequence(oldArray => [...oldArray, 'red']);
-                break;
-            case 3:
-                setArrayGameSequence(oldArray => [...oldArray, 'yellow']);
-                break;
-            default:
-                setArrayGameSequence(oldArray => [...oldArray, 'green']);
-                break;
-        }
+        arrayGameSequence.push(nextColor);
     };
 
     useEffect(() => nextGameColor(), []);
+    
+    function setIntervalX(callback, delay, repetitions) {
+        var x = 0;
+        var intervalID = setInterval(function () {
+    
+           callback();
+    
+           if (++x === repetitions) {
+               clearInterval(intervalID);
+           }
+        }, delay);
+    }
+
+    const changeColor =  function() {
+        const newState = {...color};
+
+        for(let i of arrayGameSequence){
+            setIntervalX(() => {
+                const clr = Object.keys(color).filter((item) => color[item].index === i);
+                newState[clr].active = !color[clr].active;
+                setColor({...newState})
+            }, 2000, 2)
+        }
+    }
+
+    useEffect(() => {changeColor();
+    console.log(arrayGameSequence);}, [arrayGameSequence]);
 
     function handleGamePress(color) {
         const newSequence = [...arrayPlayerSequence, color];
@@ -105,23 +95,23 @@ const Game = ({navigation}) => {
                 <LabelGrid>
 
                 <GameLabel 
-                    color={blueColor ? "#0000FF" : "#000066"}
-                    onPress={() => handleGamePress('blue')}
+                    color={color.blue.active ? "#0000FF" : "#000066"}
+                    onPress={() => handleGamePress(1)}
                 />
                 
                 <GameLabel 
-                    color={redColor ? "#FF0000" : "#660000"}
-                    onPress={() => handleGamePress('red')}
+                    color={color.red.active ? "#FF0000" : "#660000"}
+                    onPress={() => handleGamePress(2)}
                 />
                 
                 <GameLabel 
-                    color={yellowColor ? "#FFFF00" : "#666600"}
-                    onPress={() => handleGamePress('yellow')}
+                    color={color.yellow.active ? "#FFFF00" : "#666600"}
+                    onPress={() => handleGamePress(3)}
                 />
                 
                 <GameLabel 
-                    color={greenColor ? "#00ff00" : "#006600"}
-                    onPress={() => handleGamePress('green')}
+                    color={color.green.active ? "#00ff00" : "#006600"}
+                    onPress={() => handleGamePress(4)}
                 />
 
             </LabelGrid>
