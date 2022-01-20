@@ -32,20 +32,21 @@ const Game = ({navigation}) => {
 
     const nextGameColor = function () {
         const nextColor = Math.floor(Math.random() * (5 - 1)) + 1;
-        console.log(nextColor);
+        // console.log(nextColor);
 
-        setArrayGameSequence(oldArray => [...oldArray, nextColor]);
+        setArrayGameSequence(oldArray => [...oldArray, 2]);
     };
 
     useEffect(() => nextGameColor(), []);
 
-    // setInterval com número de repetições definidio
+    // setInterval com número de repetições definido
     
     function setIntervalX(callback, delay, repetitions) {
         var x = 0;
         var intervalID = setInterval(function () {
     
            callback();
+           console.log(color);
     
            if (++x === repetitions) {
                clearInterval(intervalID);
@@ -57,20 +58,44 @@ const Game = ({navigation}) => {
 
     const changeColor =  function() {
         const newState = {...color};
+        let contAct = 0;
+        let contDesac = 1;
+        arrayGameSequence.forEach((i, index) => {
+            const timeoutActiveHandle = setTimeout(() => {
+                ActiveColor(i, newState);
+            }, 2000 * contAct);
+            
+            console.log(i);
 
-        for(let i of arrayGameSequence){
-            setIntervalX(() => {
-                const clr = Object.keys(color).filter((item) => color[item].index === i);
-                newState[clr].active = !color[clr].active;
-                setColor({...newState})
-            }, 2000, 2)
-        }
+            if(arrayGameSequence[index-1] === i){
+                clearTimeout(timeoutDesactiveHandle);
+            }
+
+            const timeoutDesactiveHandle = setTimeout(() => {
+                DesactiveColor(i, newState);
+                clearTimeout(timeoutActiveHandle);
+            }, 2000 * contDesac);
+            contAct++
+            contDesac++
+            
+        })
+    }
+
+    const ActiveColor = (i, newState) => {
+        const clr = Object.keys(color).filter((item) => color[item].index === i)
+        newState[clr].active = true
+        setColor({...newState})
+    }
+
+    const DesactiveColor = (i, newState) => {
+        const clr = Object.keys(color).filter((item) => color[item].index === i)
+        newState[clr].active = false
+        setColor({...newState})
     }
 
     useEffect(() => {
         changeColor();
-        console.log(arrayGameSequence);
-    }, [arrayGameSequence]);
+        }, [arrayGameSequence]);
 
     // Função para lidar com o click do Player
 
