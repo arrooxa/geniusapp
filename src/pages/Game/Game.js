@@ -39,20 +39,6 @@ const Game = ({navigation}) => {
 
     useEffect(() => nextGameColor(), []);
 
-    // setInterval com número de repetições definido
-    
-    function setIntervalX(callback, delay, repetitions) {
-        var x = 0;
-        var intervalID = setInterval(function () {
-    
-           callback();
-           console.log(color);
-    
-           if (++x === repetitions) {
-               clearInterval(intervalID);
-           }
-        }, delay);
-    }
 
     // Função para lidar com a coloração sequencial dos quadrados
 
@@ -64,8 +50,6 @@ const Game = ({navigation}) => {
             const timeoutActiveHandle = setTimeout(() => {
                 ActiveColor(i, newState);
             }, 2000 * contAct);
-            
-            console.log(i);
 
             if(arrayGameSequence[index-1] === i){
                 clearTimeout(timeoutDesactiveHandle);
