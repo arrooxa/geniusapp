@@ -6,9 +6,12 @@ import { ButtonHome, ButtonText, GameLabel, LabelGrid, PageText } from './styles
 
 const Game = ({navigation}) => {
 
-    const [userLost, setUserLost] = useState(false);
+    // Bool para caso o player perca
 
+    const [userLost, setUserLost] = useState(false);
     const hasUserLost = () => setUserLost(userLost => !userLost);
+
+    // State para a mudança da cor na sequência
 
     const [color, setColor] = useState({
         'blue': {index: 1, active: false},
@@ -17,10 +20,16 @@ const Game = ({navigation}) => {
         'green': {index: 4, active: false},
     })
 
+    // Array para guardar os clicks do jogador
+
     const [arrayPlayerSequence, setArrayPlayerSequence] = useState([]);
+
+    // Array para guardar a sequência do jogo
 
     const arrayGameSequence = [];
     
+    // Função para inicar o jogo/rodar a próxima sequência
+
     const nextGameColor = function () {
         const nextColor = Math.floor(Math.random() * (5 - 1)) + 1;
         console.log(nextColor);
@@ -29,6 +38,8 @@ const Game = ({navigation}) => {
     };
 
     useEffect(() => nextGameColor(), []);
+
+    // setInterval com número de repetições definidio
     
     function setIntervalX(callback, delay, repetitions) {
         var x = 0;
@@ -41,6 +52,8 @@ const Game = ({navigation}) => {
            }
         }, delay);
     }
+
+    // Função para lidar com a coloração sequencial dos quadrados
 
     const changeColor =  function() {
         const newState = {...color};
@@ -58,6 +71,8 @@ const Game = ({navigation}) => {
         changeColor();
         console.log(arrayGameSequence);
     }, [arrayGameSequence]);
+
+    // Função para lidar com o click do Player
 
     function handleGamePress(color) {
         const newSequence = [...arrayPlayerSequence, color];
