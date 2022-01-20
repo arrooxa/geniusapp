@@ -10,11 +10,6 @@ const Game = ({navigation}) => {
 
     const hasUserLost = () => setUserLost(userLost => !userLost);
 
-    // const [redColor, setRedColor] = useState(false);
-    // const [blueColor, setBlueColor] = useState(false);
-    // const [yellowColor, setYellowColor] = useState(false);
-    // const [greenColor, setGreenColor] = useState(false);
-
     const [color, setColor] = useState({
         'blue': {index: 1, active: false},
         'red': {index: 2, active: false},
@@ -59,8 +54,10 @@ const Game = ({navigation}) => {
         }
     }
 
-    useEffect(() => {changeColor();
-    console.log(arrayGameSequence);}, [arrayGameSequence]);
+    useEffect(() => {
+        changeColor();
+        console.log(arrayGameSequence);
+    }, [arrayGameSequence]);
 
     function handleGamePress(color) {
         const newSequence = [...arrayPlayerSequence, color];
