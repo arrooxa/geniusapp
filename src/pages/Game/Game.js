@@ -26,7 +26,7 @@ const Game = ({navigation}) => {
 
     // Array para guardar a sequência do jogo
 
-    const arrayGameSequence = [];
+    const [arrayGameSequence, setArrayGameSequence] = useState([]);
     
     // Função para inicar o jogo/rodar a próxima sequência
 
@@ -34,7 +34,7 @@ const Game = ({navigation}) => {
         const nextColor = Math.floor(Math.random() * (5 - 1)) + 1;
         console.log(nextColor);
 
-        arrayGameSequence.push(nextColor);
+        setArrayGameSequence(oldArray => [...oldArray, nextColor]);
     };
 
     useEffect(() => nextGameColor(), []);
