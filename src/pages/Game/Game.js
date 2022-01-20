@@ -14,10 +14,30 @@ const Game = ({navigation}) => {
     // State para a mudança da cor na sequência
 
     const [color, setColor] = useState({
-        'blue': {index: 1, active: false},
-        'red': {index: 2, active: false},
-        'yellow': {index: 3, active: false},
-        'green': {index: 4, active: false},
+        'blue': {
+            index: 1, 
+            active: false,
+            colorDark: '#0000FF',
+            colorLight: '#000066'
+        },
+        'red': {
+            index: 2, 
+            active: false,
+            colorDark: '#FF0000',
+            colorLight: '#660000'
+        },
+        'yellow': {
+            index: 3, 
+            active: false,
+            colorDark: '#FFFF00',
+            colorLight: '#666600'
+        },
+        'green': {
+            index: 4,
+            active: false,
+            colorDark: '#00ff00',
+            colorLight: '#006600'
+        },
     })
 
     // Array para guardar os clicks do jogador
@@ -32,9 +52,9 @@ const Game = ({navigation}) => {
 
     const nextGameColor = function () {
         const nextColor = Math.floor(Math.random() * (5 - 1)) + 1;
-        // console.log(nextColor);
+        console.log(nextColor);
 
-        setArrayGameSequence(oldArray => [...oldArray, 2]);
+        setArrayGameSequence(oldArray => [...oldArray, nextColor]);
     };
 
     useEffect(() => nextGameColor(), []);
@@ -47,21 +67,21 @@ const Game = ({navigation}) => {
         let contAct = 0;
         let contDesac = 1;
         arrayGameSequence.forEach((i, index) => {
+            if(arrayGameSequence[index-1] === i){
+                contAct ++;
+                contDesac++;
+            }
+
             const timeoutActiveHandle = setTimeout(() => {
                 ActiveColor(i, newState);
             }, 2000 * contAct);
-
-            if(arrayGameSequence[index-1] === i){
-                clearTimeout(timeoutDesactiveHandle);
-            }
-
+    
             const timeoutDesactiveHandle = setTimeout(() => {
                 DesactiveColor(i, newState);
                 clearTimeout(timeoutActiveHandle);
             }, 2000 * contDesac);
-            contAct++
-            contDesac++
-            
+            contAct++;
+            contDesac++;
         })
     }
 
@@ -115,25 +135,13 @@ const Game = ({navigation}) => {
             { !userLost && 
                 <LabelGrid>
 
-                <GameLabel 
-                    color={color.blue.active ? "#0000FF" : "#000066"}
-                    onPress={() => handleGamePress(1)}
-                />
-                
-                <GameLabel 
-                    color={color.red.active ? "#FF0000" : "#660000"}
-                    onPress={() => handleGamePress(2)}
-                />
-                
-                <GameLabel 
-                    color={color.yellow.active ? "#FFFF00" : "#666600"}
-                    onPress={() => handleGamePress(3)}
-                />
-                
-                <GameLabel 
-                    color={color.green.active ? "#00ff00" : "#006600"}
-                    onPress={() => handleGamePress(4)}
-                />
+                {Object.values(color).map((item) =>
+                    <GameLabel 
+                        key={item['index']}
+                        color={item['active'] ? item['colorDark'] : item['colorLight']}
+                        onPress={() => handleGamePress(item['index'])}
+                    />
+                )}
 
             </LabelGrid>
             }
