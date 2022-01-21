@@ -83,11 +83,11 @@ const Game = ({navigation}) => {
             }
 
             const timeoutActiveHandle = setTimeout(() => {
-                ActiveColor(i, newState);
+                activeColor(i, newState);
             }, 2000 * contAct);
     
             const timeoutDesactiveHandle = setTimeout(() => {
-                DesactiveColor(i, newState);
+                desactiveColor(i, newState);
                 clearTimeout(timeoutActiveHandle);
 
                 if(index + 1 === arrayGameSequence.length){
@@ -102,16 +102,28 @@ const Game = ({navigation}) => {
         
     }
 
-    const ActiveColor = (i, newState) => {
+    const activeColor = (i, newState) => {
         const clr = Object.keys(color).filter((item) => color[item].index === i);
-        newState[clr].active = true;
-        setColor({...newState});
+        if(newState !== undefined){
+            newState[clr].active = true;
+            setColor({...newState});
+        }else{
+            const scopeNewState = {...color};
+            scopeNewState[clr].active = true;
+            setColor({...scopeNewState});
+        }
     }
 
-    const DesactiveColor = (i, newState) => {
+    const desactiveColor = (i, newState) => {
         const clr = Object.keys(color).filter((item) => color[item].index === i);
-        newState[clr].active = false;
-        setColor({...newState});
+        if(newState !== undefined){
+            newState[clr].active = false;
+            setColor({...newState});
+        }else{
+            const scopeNewState = {...color};
+            scopeNewState[clr].active = false;
+            setColor({...scopeNewState});
+        }
     }
 
     useEffect(() => {
@@ -120,21 +132,29 @@ const Game = ({navigation}) => {
 
     // Função para lidar com o click do Player
 
-    function handleGamePress(color) {
-        const newSequence = [...arrayPlayerSequence, color];
+    function handleGamePress(numColor) {
+        const newSequence = [...arrayPlayerSequence, numColor];
         setArrayPlayerSequence(newSequence);
 
-        console.log(newSequence);
+        const timeoutActiveHandle = setTimeout(() => {
+            activeColor(numColor);
+        }, 0);
 
-        if(newSequence[index] === arrayGameSequence[index]){
-            index += 1;
-            if(JSON.stringify(newSequence).length === JSON.stringify(arrayGameSequence).length) {
-                nextGameColor();
+        const timeoutDesactiveHandle = setTimeout(() => {
+            desactiveColor(numColor);
+            clearTimeout(timeoutActiveHandle);
+        }, 500);
+
+        setTimeout(() => {
+            if(newSequence[index] === arrayGameSequence[index]){
+                index += 1;
+                if(JSON.stringify(newSequence).length === JSON.stringify(arrayGameSequence).length) {
+                    nextGameColor();
+                }
+            }else{
+                hasUserLost();
             }
-        }else{
-            console.log('uhu');
-        }
-
+        }, 1500)
     }
 
     return (
