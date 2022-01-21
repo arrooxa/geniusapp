@@ -48,6 +48,8 @@ const Game = ({navigation}) => {
     // Array para guardar os clicks do jogador
 
     const [arrayPlayerSequence, setArrayPlayerSequence] = useState([]);
+    const emptyArrayPlayerSequence = () => setArrayPlayerSequence(oldArray => []);
+    var index = 0;
 
     // Array para guardar a sequência do jogo
 
@@ -90,6 +92,7 @@ const Game = ({navigation}) => {
 
                 if(index + 1 === arrayGameSequence.length){
                     hasColorsChanged();
+                    emptyArrayPlayerSequence();
                 }
             }, 2000 * contDesac);
             contAct++;
@@ -121,11 +124,17 @@ const Game = ({navigation}) => {
         const newSequence = [...arrayPlayerSequence, color];
         setArrayPlayerSequence(newSequence);
 
-        if(JSON.stringify(newSequence) === JSON.stringify(arrayGameSequence)) {
-            nextGameColor();
+        console.log(newSequence);
+
+        if(newSequence[index] === arrayGameSequence[index]){
+            index += 1;
+            if(JSON.stringify(newSequence).length === JSON.stringify(arrayGameSequence).length) {
+                nextGameColor();
+            }
         }else{
-            hasUserLost();
+            console.log('uhu');
         }
+
     }
 
     return (
