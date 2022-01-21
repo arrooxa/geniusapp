@@ -11,6 +11,11 @@ const Game = ({navigation}) => {
     const [userLost, setUserLost] = useState(false);
     const hasUserLost = () => setUserLost(userLost => !userLost);
 
+    // Bool para desativar o botão enquanto as cores mudam
+
+    const [isChangingColor, setChangingColor] = useState(true);
+    const hasColorsChanged = () => setChangingColor(bool => !bool);
+
     // State para a mudança da cor na sequência
 
     const [color, setColor] = useState({
@@ -54,6 +59,8 @@ const Game = ({navigation}) => {
         const nextColor = Math.floor(Math.random() * (5 - 1)) + 1;
         console.log(nextColor);
 
+        hasColorsChanged();
+
         setArrayGameSequence(oldArray => [...oldArray, nextColor]);
     };
 
@@ -66,6 +73,7 @@ const Game = ({navigation}) => {
         const newState = {...color};
         let contAct = 0;
         let contDesac = 1;
+
         arrayGameSequence.forEach((i, index) => {
             if(arrayGameSequence[index-1] === i){
                 contAct ++;
@@ -79,22 +87,28 @@ const Game = ({navigation}) => {
             const timeoutDesactiveHandle = setTimeout(() => {
                 DesactiveColor(i, newState);
                 clearTimeout(timeoutActiveHandle);
+
+                if(index + 1 === arrayGameSequence.length){
+                    hasColorsChanged();
+                }
             }, 2000 * contDesac);
             contAct++;
             contDesac++;
         })
+
+        
     }
 
     const ActiveColor = (i, newState) => {
-        const clr = Object.keys(color).filter((item) => color[item].index === i)
-        newState[clr].active = true
-        setColor({...newState})
+        const clr = Object.keys(color).filter((item) => color[item].index === i);
+        newState[clr].active = true;
+        setColor({...newState});
     }
 
     const DesactiveColor = (i, newState) => {
-        const clr = Object.keys(color).filter((item) => color[item].index === i)
-        newState[clr].active = false
-        setColor({...newState})
+        const clr = Object.keys(color).filter((item) => color[item].index === i);
+        newState[clr].active = false;
+        setColor({...newState});
     }
 
     useEffect(() => {
@@ -139,7 +153,11 @@ const Game = ({navigation}) => {
                     <GameLabel 
                         key={item['index']}
                         color={item['active'] ? item['colorDark'] : item['colorLight']}
-                        onPress={() => handleGamePress(item['index'])}
+                        onPress={() => {
+                            if(isChangingColor){
+                                handleGamePress(item['index']);
+                            }
+                        }}
                     />
                 )}
 
