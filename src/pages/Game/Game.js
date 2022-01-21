@@ -49,7 +49,7 @@ const Game = ({navigation}) => {
 
     const [arrayPlayerSequence, setArrayPlayerSequence] = useState([]);
     const emptyArrayPlayerSequence = () => setArrayPlayerSequence(oldArray => []);
-    var index = 0;
+    const [indexArray, setIndexArray] = useState(0);
 
     // Array para guardar a sequência do jogo
 
@@ -93,6 +93,7 @@ const Game = ({navigation}) => {
                 if(index + 1 === arrayGameSequence.length){
                     hasColorsChanged();
                     emptyArrayPlayerSequence();
+                    setIndexArray(index => 0);
                 }
             }, 2000 * contDesac);
             contAct++;
@@ -136,25 +137,28 @@ const Game = ({navigation}) => {
         const newSequence = [...arrayPlayerSequence, numColor];
         setArrayPlayerSequence(newSequence);
 
-        const timeoutActiveHandle = setTimeout(() => {
-            activeColor(numColor);
-        }, 0);
+        if(newSequence[indexArray] === arrayGameSequence[indexArray]){
+            setIndexArray(index => index + 1);
+                         
+            const timeoutActiveHandle = setTimeout(() => {
+                activeColor(numColor);
+            }, 0);
 
-        const timeoutDesactiveHandle = setTimeout(() => {
-            desactiveColor(numColor);
-            clearTimeout(timeoutActiveHandle);
-        }, 500);
+            const timeoutDesactiveHandle = setTimeout(() => {
+                desactiveColor(numColor);
+                clearTimeout(timeoutActiveHandle);
+            }, 500);
 
-        setTimeout(() => {
-            if(newSequence[index] === arrayGameSequence[index]){
-                index += 1;
-                if(JSON.stringify(newSequence).length === JSON.stringify(arrayGameSequence).length) {
+            if(JSON.stringify(newSequence).length === JSON.stringify(arrayGameSequence).length) {
+                setTimeout(() => {
                     nextGameColor();
-                }
-            }else{
-                hasUserLost();
+                }, 1500)
             }
-        }, 1500)
+        }else{
+            hasUserLost();
+        }
+
+
     }
 
     return (
