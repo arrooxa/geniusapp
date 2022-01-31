@@ -12,6 +12,8 @@ target 'geniusapp' do
     :hermes_enabled => false
   )
 
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
   target 'geniusappTests' do
     inherit! :complete
     # Pods for testing

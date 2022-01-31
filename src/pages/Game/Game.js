@@ -4,7 +4,11 @@ import Container from '../styles';
 
 import { ButtonHome, ButtonText, GameLabel, LabelGrid, PageText } from './styles'
 
+import Sound from 'react-native-sound';
+
 const Game = ({navigation}) => {
+
+    Sound.setCategory('Playback');
 
     // Bool para caso o player perca
 
@@ -23,25 +27,29 @@ const Game = ({navigation}) => {
             index: 1, 
             active: false,
             colorDark: '#0000FF',
-            colorLight: '#000066'
+            colorLight: '#000066',
+            sound: 'sound01.mp3'
         },
         'red': {
             index: 2, 
             active: false,
             colorDark: '#FF0000',
-            colorLight: '#660000'
+            colorLight: '#660000',
+            sound: 'sound02.mp3'
         },
         'yellow': {
             index: 3, 
             active: false,
             colorDark: '#FFFF00',
-            colorLight: '#666600'
+            colorLight: '#666600',
+            sound: 'sound03.mp3'
         },
         'green': {
             index: 4,
             active: false,
             colorDark: '#00ff00',
-            colorLight: '#006600'
+            colorLight: '#006600',
+            sound: 'sound04.mp3'
         },
     })
 
@@ -105,6 +113,21 @@ const Game = ({navigation}) => {
 
     const activeColor = (i, newState) => {
         const clr = Object.keys(color).filter((item) => color[item].index === i);
+
+        const sound = new Sound(color[clr].sound, Sound.MAIN_BUNDLE, (e) => {
+            if (e){
+                console.log('Som não encontrado!');
+            }
+
+            sound.play((success) => {
+                if(success){
+                    console.log('Som efetuado!');
+                }else{
+                    console.log('Playback falhou!');
+                }
+            })
+        })
+
         if(newState !== undefined){
             newState[clr].active = true;
             setColor({...newState});
@@ -129,7 +152,7 @@ const Game = ({navigation}) => {
 
     useEffect(() => {
         changeColor();
-        }, [arrayGameSequence]);
+    }, [arrayGameSequence]);
 
     // Função para lidar com o click do Player
 

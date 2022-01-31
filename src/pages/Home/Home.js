@@ -8,7 +8,7 @@ const Home = ({navigation}) => {
     return (
         <Container>
             <IconImage
-                source={require('../../assets/genius-icon.png')}
+                source={require('../../assets/logo.png')}
             />
             <GameText>
                 Genius Game!
