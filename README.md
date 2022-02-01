@@ -1,35 +1,45 @@
-# Genius App!
+## Genius App!
 
 Jogo Genius em React Native, funcional porém ainda em polimento.
 
 
 
-# Como jogar!
+## Como jogar!
 
-    OBS: Esse aplicativo não foi construido com Expo.
+OBS: Esse aplicativo não foi construido com Expo.
 
-    Rodando pela primeira vez:
+Rodando pela primeira vez:
 
-    * npm install
+```javascript
+npm install
+```
 
-    * npx react-native link react-native-sound
+```javascript
+npx react-native link react-native-sound
+```
 
-    * npx react-native run-android
-
-
-    Depois da primeira instalação para jogar é só executar:
-
-    npm run start
-
-    ou 
-
-    yarn start
+```javascript
+npx react-native run-android
+```
 
 
+Depois da primeira instalação para jogar é só executar:
 
-# Tecnologias usadas 
+```javascript
+npm run start
+```
+
+ou 
+
+```javascript
+yarn start
+```
+
+
+
+## Tecnologias usadas 
   
-    * React Native
-    * Styled Components
-    * react-native-sound
+* React Native
+* Styled Components
+* react-native-sound
  
