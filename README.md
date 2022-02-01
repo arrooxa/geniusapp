@@ -6,7 +6,9 @@ Jogo Genius em React Native, funcional porém ainda em polimento.
 
 # Como jogar!
 
-    Esse aplicativo não foi construido com Expo.
+    OBS: Esse aplicativo não foi construido com Expo.
+
+    Rodando pela primeira vez:
 
     * npm install
 
